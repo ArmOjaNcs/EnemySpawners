@@ -4,7 +4,7 @@ using UnityEngine;
 public class SpawnersCommander : MonoBehaviour
 {
     [SerializeField] private EnemySpawner[] _enemySpawners;
-    [SerializeField] private float _rate;
+    [SerializeField] private float _rate = 2f;
 
     private WaitForSeconds _wait;
 

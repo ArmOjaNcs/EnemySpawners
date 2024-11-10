@@ -657,7 +657,7 @@ MonoBehaviour:
   - {fileID: 566870026}
   - {fileID: 524411073}
   - {fileID: 31233132}
-  _rate: 0.5
+  _rate: 2
 --- !u!4 &1303793496
 Transform:
   m_ObjectHideFlags: 0
