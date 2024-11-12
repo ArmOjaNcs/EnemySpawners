@@ -23,7 +23,7 @@ public class SpawnersCommander : MonoBehaviour
         while (true)
         {
             int spawnerIndex = Random.Range(0, _enemySpawners.Length);
-            _enemySpawners[spawnerIndex].GetEnemy();
+            _enemySpawners[spawnerIndex].SpawnEnemy();
             yield return _wait;
         }
     }

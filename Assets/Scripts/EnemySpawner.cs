@@ -7,14 +7,13 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private int _poolCapacity;
     [SerializeField] private int _poolMaxSize;
     [SerializeField] private Transform _target;
+    [SerializeField] private EnemyType _enemyType;
+    [SerializeField] private Portal _portal;
 
     private ObjectPool<Enemy> _pool;
-    private Vector3 _direction;
 
     private void Awake()
     {
-        _direction = _target.transform.position;
-
         _pool = new ObjectPool<Enemy>(
         createFunc: () => CreateEnemy(),
         actionOnGet: (enemy) => SetStartParameters(enemy),
@@ -25,7 +24,22 @@ public class EnemySpawner : MonoBehaviour
         maxSize: _poolMaxSize);
     }
 
-    public void GetEnemy()
+    private void OnEnable()
+    {
+        _portal.EnemyTriggered += OnEnemyTriggered;
+    }
+
+    private void OnDisable()
+    {
+        _portal.EnemyTriggered -= OnEnemyTriggered;
+    }
+
+    private void OnEnemyTriggered(Enemy enemy)
+    {
+        _pool.Release(enemy);
+    }
+
+    public void SpawnEnemy()
     {
         _pool.Get();
     }
@@ -33,8 +47,8 @@ public class EnemySpawner : MonoBehaviour
     private Enemy CreateEnemy()
     {
         Enemy createdEnemy = Instantiate(_prefab);
-        createdEnemy.Finished += OnFinished;
-        createdEnemy.SetDirection(_direction);
+        createdEnemy.SetTarget(_target);
+        createdEnemy.SetType(_enemyType);
         createdEnemy.gameObject.SetActive(false);
         return createdEnemy;
     }
@@ -45,14 +59,8 @@ public class EnemySpawner : MonoBehaviour
         enemy.gameObject.SetActive(true);
     }
 
-    private void OnFinished(Enemy enemy)
-    {
-        _pool.Release(enemy);
-    }
-
     private void DestroyObjectInPool(Enemy enemy)
     {
-        enemy.Finished -= OnFinished;
         Destroy(enemy.gameObject);
     }
 }

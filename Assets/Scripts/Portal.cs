@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Portal : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private EnemyType _enemyType;
 
-    // Update is called once per frame
-    void Update()
+    public event Action<Enemy> EnemyTriggered;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if(other.gameObject.TryGetComponent(out Enemy enemy))
+        {
+            if(enemy.Type == _enemyType)
+                EnemyTriggered?.Invoke(enemy);
+        }
     }
 }

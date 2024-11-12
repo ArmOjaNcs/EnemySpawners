@@ -4,14 +4,14 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     [SerializeField, Range(0.01f, 0.1f)] private float _speed;
-    [SerializeField] private Vector3 _direction;
-
-    private readonly float _acceleration = 0.001f;
-    private readonly float _speedLimit = 0.25f;
-
+    [SerializeField, Range(0.0005f, 0.001f)] private float _acceleration;
+    [SerializeField, Range(0.1f, 0.25f)] private float _speedLimit;
+    
+    private Transform _target;
     private float _currentSpeed;
+    private EnemyType _type;
 
-    public event Action<Enemy> Finished;
+    public EnemyType Type => _type;
 
     private void OnEnable()
     {
@@ -26,20 +26,19 @@ public class Enemy : MonoBehaviour
         MoveToDirection();
     }
 
-    private void OnCollisionEnter(Collision collision)
+    public void SetTarget(Transform target)
     {
-        if (collision.gameObject.TryGetComponent<Portal>(out Portal _))
-            Finished?.Invoke(this);
+        _target = target;
     }
 
-    public void SetDirection(Vector3 direction)
+    public void SetType(EnemyType type)
     {
-        _direction = direction;
+        _type = type;
     }
 
     private void MoveToDirection()
     {
-        transform.position = Vector3.MoveTowards(transform.position, _direction, _currentSpeed);
-        transform.LookAt(_direction);
+        transform.position = Vector3.MoveTowards(transform.position, _target.position, _currentSpeed);
+        transform.LookAt(_target);
     }
 }
