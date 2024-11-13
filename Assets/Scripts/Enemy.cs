@@ -7,11 +7,13 @@ public class Enemy : MonoBehaviour
     [SerializeField, Range(0.0005f, 0.001f)] private float _acceleration;
     [SerializeField, Range(0.1f, 0.25f)] private float _speedLimit;
     
+    private readonly float _minDistanceToFinish = 2;
+    
     private Transform _target;
     private float _currentSpeed;
-    private EnemyType _type;
+    Vector3 _distance;
 
-    public EnemyType Type => _type;
+    public event Action<Enemy> Finished;
 
     private void OnEnable()
     {
@@ -26,14 +28,17 @@ public class Enemy : MonoBehaviour
         MoveToDirection();
     }
 
+    private void Update()
+    {
+        _distance = transform.position - _target.position;
+
+        if (_distance.magnitude < _minDistanceToFinish)
+            Finished?.Invoke(this);
+    }
+
     public void SetTarget(Transform target)
     {
         _target = target;
-    }
-
-    public void SetType(EnemyType type)
-    {
-        _type = type;
     }
 
     private void MoveToDirection()
