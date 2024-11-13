@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour
     
     private Transform _target;
     private float _currentSpeed;
-    Vector3 _distance;
+    private Vector3 _distance;
 
     public event Action<Enemy> Finished;
 
@@ -25,14 +25,14 @@ public class Enemy : MonoBehaviour
         if (_currentSpeed < _speedLimit)
             _currentSpeed += _acceleration;
 
-        MoveToDirection();
+        MoveToTarget();
     }
 
     private void Update()
     {
         _distance = transform.position - _target.position;
 
-        if (_distance.magnitude < _minDistanceToFinish)
+        if (_distance.sqrMagnitude < (_minDistanceToFinish * _minDistanceToFinish))
             Finished?.Invoke(this);
     }
 
@@ -41,7 +41,7 @@ public class Enemy : MonoBehaviour
         _target = target;
     }
 
-    private void MoveToDirection()
+    private void MoveToTarget()
     {
         transform.position = Vector3.MoveTowards(transform.position, _target.position, _currentSpeed);
         transform.LookAt(_target);

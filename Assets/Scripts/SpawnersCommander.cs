@@ -20,7 +20,7 @@ public class SpawnersCommander : MonoBehaviour
 
     private IEnumerator SpawningEnemy()
     {
-        while (true)
+        while (enabled)
         {
             int spawnerIndex = Random.Range(0, _enemySpawners.Length);
             _enemySpawners[spawnerIndex].SpawnEnemy();

@@ -15,7 +15,7 @@ public class PortalMover : MonoBehaviour
     private void FixedUpdate()
     {
         if(transform.position == _points[ _indexOfPoint].position)
-            _indexOfPoint = ( _indexOfPoint + 1) % _points.Length;
+            _indexOfPoint = ++_indexOfPoint % _points.Length;
         
         transform.position = Vector3.MoveTowards(transform.position, _points[_indexOfPoint].position, _speed);
     }

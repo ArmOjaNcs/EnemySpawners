@@ -13,13 +13,13 @@ public class EnemySpawner : MonoBehaviour
     private void Awake()
     {
         _pool = new ObjectPool<Enemy>(
-        createFunc: () => CreateEnemy(),
-        actionOnGet: (enemy) => SetStartParameters(enemy),
-        actionOnRelease: (enemy) => enemy.gameObject.SetActive(false),
-        actionOnDestroy: (enemy) => DestroyObjectInPool(enemy),
-        collectionCheck: true,
-        defaultCapacity: _poolCapacity,
-        maxSize: _poolMaxSize);
+            createFunc: () => CreateEnemy(),
+            actionOnGet: (enemy) => SetStartParameters(enemy),
+            actionOnRelease: (enemy) => enemy.gameObject.SetActive(false),
+            actionOnDestroy: (enemy) => DestroyObjectInPool(enemy),
+            collectionCheck: true,
+            defaultCapacity: _poolCapacity,
+            maxSize: _poolMaxSize);
     }
 
     public void SpawnEnemy()
